@@ -1,11 +1,6 @@
 $(document).ready(function(){
 
-
 var intervalId;
-// $("input[type='radio']").on("click", function() {
-//   var radioValue = $("input[name='exampleRadios']:checked").val();
-//   console.log(radioValue);
-// });
 
 trivia.startTimer();
 
@@ -42,39 +37,15 @@ var trivia = {
   },
 
   checkAnswers: function() {
-  //   // var radioValue = $("input[name='radio-answer']:checked").val();
-  //   // console.log(radioValue);
-  //   // var correctAnswer = trivia.simpsonsQuestions.question1.correct;
-  //   //
-  //   // if radioValue === $("#radio1label")
-  //
-  //   var radioValue = $("input[name='radio-answer']:checked").val();
-  //   console.log(radioValue);
-  //   //var correctAnswer = trivia.simpsonsQuestions.question1.correct;
-  //
-  //
-  //   {
-  //     console.log("hello");
-  //   }
+
   var correctAnswer = trivia.simpsonsQuestions.question1.correct;
-  // var userAnswer = $("input[type='radio']:checked").each(function() {
-  //         var idVal = $(this).attr("id");
-  //         console.log($("label[for='"+idVal+"']").text());
-  //     });
-  var userAnswer = $("input[type='radio']:checked").parent().text();
-  var text = $("input:checked + label").text();
+  var userAnswer = $("input:checked + label").text();
 
   console.log(correctAnswer);
-  console.log(text);
+  console.log(userAnswer);
 
-  // var userAnswer = $("input[type='radio']:checked").parent().text();
 
-  // $("input[type='radio']:checked").each(function() {
-  //         var idVal = $(this).attr("id");
-  //         console.log($("label[for='"+idVal+"']").text());
-  //     });
-
-if (text === correctAnswer) {
+if (userAnswer === correctAnswer) {
      console.log("celebrate");
   }
 
@@ -85,27 +56,14 @@ if (text === correctAnswer) {
 
 // TODO: make this in a loop
   displayQuestions: function() {
-    var question = $("#question").text(this.simpsonsQuestions.question1.question);
-    //$("#radio1label").val(question);
-    //var answer1 = $("#radio1label").text(this.simpsonsQuestions.question1.answers[0]);
+    var question = $("#question").text(this.simpsonsQuestions.question1.question);;
     var answer1 = this.simpsonsQuestions.question1.answers[0];
     $("#radio1label").text(answer1);
-    // var answer2 = $("#radio2label").text(this.simpsonsQuestions.question1.answers[1]);
-    // var answer3 = $("#radio3label").text(this.simpsonsQuestions.question1.answers[2]);
-    // var correctAnswer = trivia.simpsonsQuestions.question1.correct;
-    // var radio1Value = $("input[name='radio-answer']:checked").val();
 
     var answer2 = this.simpsonsQuestions.question1.answers[1];
     $("#radio2label").text(answer2);
     var answer3 = this.simpsonsQuestions.question1.answers[2];
     $("#radio3label").text(answer3);
-
-
-    // $("input:value").val(correctAnswer);
-    // },
-    // tallyAnswers : function() {
-    //   var radioValue = $("input[name='exampleRadios']:checked").val()
-    //   console.log(radioValue);
     },
 
 simpsonsQuestions : {
