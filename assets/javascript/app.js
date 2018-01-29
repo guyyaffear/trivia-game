@@ -7,25 +7,30 @@ $("#start-button").on("click", gameState.startTimer);
 
 var gameState = {
 
-  //make this 120 seconds when actually playing game
+  //make this 60 seconds when actually playing game
+
+  //TODO : why does time remaining show up later?
+  
 timeRemaining : 10,
 
 showEndPage: function(numCorrect, numIncorrect, numUnanswered) {
     $("#end-page").show();
     $("#questions-box").hide();
-    $("#correct-answers").text(numCorrect);
-    $("#incorrect-answers").text(numIncorrect);
-    $("#unanswered").text(numUnanswered);
+    $("#timer").hide();
+    $("#correct-answers").text("Correct answers: " + numCorrect);
+    $("#incorrect-answers").text("Incorrect answers: " + numIncorrect);
+    $("#unanswered").text("Questions skipped: " + numUnanswered);
     console.log(numCorrect, numIncorrect, numUnanswered);
 },
 
 reset: function() {
   gameState.timeRemaining = 10;
-  $("#timer".text(10));
+  $("#timer").text("Time remaining: " + 10);
 },
 
 startTimer: function() {
   $("#start-page").hide(); //hide the start page and show game play
+  $("#timer").show();
   intervalId = setInterval(gameState.countdown, 1000);
 
   trivia.displayQuestions();
@@ -40,7 +45,7 @@ stopTimer: function() {
 
 countdown: function() {
   gameState.timeRemaining--;
-  $("#timer").text(gameState.timeRemaining);
+  $("#timer").text("Time remaining: " + gameState.timeRemaining);
   if (gameState.timeRemaining === 0) {
     gameState.stopTimer();
   }

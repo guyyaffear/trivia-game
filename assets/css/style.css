@@ -5,3 +5,45 @@ body {
 #end-page {
   display: none;
 }
+
+#main-logo {
+  padding-top: 50px;
+  padding-bottom: 20px;
+  width: 100% \9;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 20px;
+}
+
+.card-body p {
+  font-size: 20px;
+}
+
+#end-page p {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+#correct-answers {
+  margin-top: 32px;
+}
+
+#question {
+  margin-top: 32px;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+footer {
+  height: 30px;
+  margin-top: 30px;
+}
+
+#copyright-small {
+  font-size: 12px;
+}
