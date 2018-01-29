@@ -1,9 +1,8 @@
 $(document).ready(function(){
 
 var intervalId;
-  //$("#stop").on("click", gameState.startTimer);
+$("#start-button").on("click", gameState.startTimer);
 
-gameState.startTimer();
 });
 
 var gameState = {
@@ -11,21 +10,32 @@ var gameState = {
   //make this 120 seconds when actually playing game
 timeRemaining : 10,
 
+showEndPage: function(numCorrect, numIncorrect, numUnanswered) {
+    $("#end-page").show();
+    $("#questions-box").hide();
+    $("#correct-answers").text(numCorrect);
+    $("#incorrect-answers").text(numIncorrect);
+    $("#unanswered").text(numUnanswered);
+    console.log(numCorrect, numIncorrect, numUnanswered);
+},
+
 reset: function() {
   gameState.timeRemaining = 10;
   $("#timer".text(10));
 },
 
 startTimer: function() {
+  $("#start-page").hide(); //hide the start page and show game play
   intervalId = setInterval(gameState.countdown, 1000);
+
   trivia.displayQuestions();
 },
 
 stopTimer: function() {
   clearInterval(intervalId);
   console.log("time stopped");
+
   trivia.checkAnswers();
-  // end game, tally score, show new page with score
 },
 
 countdown: function() {
@@ -39,9 +49,13 @@ countdown: function() {
 }
 
 var trivia = {
+
   checkAnswers: function() {
     var correctAnswer;
     var userAnswer;
+    var numCorrect = 0;
+    var numIncorrect = 0;
+    var numUnanswered = 0;
 
     for (var i = 0; i < questionBank.length; i++) {
       correctAnswer = questionBank[i].correct;
@@ -52,16 +66,21 @@ var trivia = {
 
       if (userAnswer === correctAnswer) {
         console.log("celebrate");
+        numCorrect++;
       } else if (userAnswer === "") {
-              console.log("no answer")
+              console.log("no answer");
+          numUnanswered++;
       }
       else if (userAnswer !== correctAnswer) {
          {
           console.log("sorry");
+          numIncorrect++;
       }
 
       }
-}
+        }
+        // console.log(numCorrect, numIncorrect, numUnanswered);
+      gameState.showEndPage(numCorrect, numIncorrect, numUnanswered);
   },
 
   // keepScore: function() {
