@@ -1,46 +1,50 @@
 $(document).ready(function(){
 
 var intervalId;
+  //$("#stop").on("click", gameState.startTimer);
 
-trivia.startTimer();
-
+gameState.startTimer();
 });
 
+var gameState = {
+
+  //make this 120 seconds when actually playing game
+timeRemaining : 10,
+
+reset: function() {
+  gameState.timeRemaining = 10;
+  $("#timer".text(10));
+},
+
+startTimer: function() {
+  intervalId = setInterval(gameState.countdown, 1000);
+  trivia.displayQuestions();
+},
+
+stopTimer: function() {
+  clearInterval(intervalId);
+  console.log("time stopped");
+  trivia.checkAnswers();
+  // end game, tally score, show new page with score
+},
+
+countdown: function() {
+  gameState.timeRemaining--;
+  $("#timer").text(gameState.timeRemaining);
+  if (gameState.timeRemaining === 0) {
+    gameState.stopTimer();
+  }
+}
+
+}
+
 var trivia = {
-    //make this 120 seconds when actually playing game
-  timeRemaining : 10,
-
-  reset: function() {
-    trivia.timeRemaining = 10;
-    $("#timer".text(10));
-  },
-
-  startTimer: function() {
-    intervalId = setInterval(trivia.countdown, 1000);
-    trivia.displayQuestions();
-  },
-
-  stopTimer: function() {
-    clearInterval(intervalId);
-    console.log("time stopped");
-    trivia.checkAnswers();
-    // end game, tally score, show new page with score
-  },
-
-  countdown: function() {
-    trivia.timeRemaining--;
-    $("#timer").text(trivia.timeRemaining);
-    if (trivia.timeRemaining === 0) {
-      trivia.stopTimer();
-    }
-  },
-
   checkAnswers: function() {
     var correctAnswer;
     var userAnswer;
 
-    for (var i = 0; i < simpsonsQuestions.length; i++) {
-      correctAnswer = simpsonsQuestions[i].correct;
+    for (var i = 0; i < questionBank.length; i++) {
+      correctAnswer = questionBank[i].correct;
       userAnswer = $('input[id=radio'+i+']:checked + label').text();
 
       console.log("correct answer " + correctAnswer);
@@ -68,13 +72,13 @@ var trivia = {
       var divContainer = $("#questions-box");
       var answerGroup = $(".form-check");
 
-    for (var i = 0; i < simpsonsQuestions.length; i++) {
+    for (var i = 0; i < questionBank.length; i++) {
 
-      divContainer.append('<div id="question">' + simpsonsQuestions[i].question + '</div>');
+      divContainer.append('<div id="question">' + questionBank[i].question + '</div>');
 
-      var answer1 = simpsonsQuestions[i].answers[0];
-      var answer2 = simpsonsQuestions[i].answers[1];
-      var answer3 = simpsonsQuestions[i].answers[2];
+      var answer1 = questionBank[i].answers[0];
+      var answer2 = questionBank[i].answers[1];
+      var answer3 = questionBank[i].answers[2];
 
       divContainer.append('<div class="form-check"><input class="form-check-input" type="radio" name="radio-group'+i+'" id="radio'+i+'"><label class="form-check-label" id="radio'+i+'label" for="radio'+i+'">' + answer1 + '</label></div>');
       divContainer.append('<div class="form-check"><input class="form-check-input" type="radio" name="radio-group'+i+'" id="radio'+i+'"><label class="form-check-label" id="radio'+i+'label" for="radio'+i+'">' + answer2 + '</label></div>');
@@ -83,7 +87,7 @@ var trivia = {
   },
 }
 
-var simpsonsQuestions =
+var questionBank =
 [
    {
     question: "Who is the mayor of Springfield?",
