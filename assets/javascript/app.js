@@ -23,50 +23,50 @@ var trivia = {
   stopTimer: function() {
     clearInterval(intervalId);
     console.log("time stopped");
-    // trivia.checkAnswers();
+    trivia.checkAnswers();
     // end game, tally score, show new page with score
   },
 
   countdown: function() {
     trivia.timeRemaining--;
     $("#timer").text(trivia.timeRemaining);
-    // console.log(trivia.timeRemaining);
     if (trivia.timeRemaining === 0) {
       trivia.stopTimer();
     }
   },
 
-//   checkAnswers: function() {
-//
-//   var correctAnswer = simpsonsQuestions.correct;
-//   var userAnswer = $("input:checked + label").text();
-//
-//   console.log(correctAnswer);
-//   console.log(userAnswer);
-//
-//
-// if (userAnswer === correctAnswer) {
-//      console.log("celebrate");
-//   }
-//
-//   },
-  // keepScore: function() {
-  //   // tally up correct, incorrect, unanswered
-// },
+  checkAnswers: function() {
+    var correctAnswer;
+    var userAnswer;
 
-// TODO: make this in a loop
+    for (var i = 0; i < simpsonsQuestions.length; i++) {
+      correctAnswer = simpsonsQuestions[i].correct;
+      userAnswer = $('input[id=radio'+i+']:checked + label').text();
+
+      console.log("correct answer " + correctAnswer);
+      // console.log("user answer " + userAnswer);
+
+      if (userAnswer === correctAnswer) {
+        console.log("celebrate");
+      } else if (userAnswer === "") {
+              console.log("no answer")
+      }
+      else if (userAnswer !== correctAnswer) {
+         {
+          console.log("sorry");
+      }
+
+      }
+}
+  },
+
+  // keepScore: function() {
+  //   var score =
+  // },
+
   displayQuestions: function() {
-    // var question = $("#question").text(this.simpsonsQuestions.question1.question);;
-    // var answer1 = this.simpsonsQuestions.question1.answers[0];
-    // $("#radio1label").text(answer1);
-    //
-    // var answer2 = this.simpsonsQuestions.question1.answers[1];
-    // $("#radio2label").text(answer2);
-    // var answer3 = this.simpsonsQuestions.question1.answers[2];
-    // $("#radio3label").text(answer3);
       var divContainer = $("#questions-box");
       var answerGroup = $(".form-check");
-
 
     for (var i = 0; i < simpsonsQuestions.length; i++) {
 
@@ -74,21 +74,13 @@ var trivia = {
 
       var answer1 = simpsonsQuestions[i].answers[0];
       var answer2 = simpsonsQuestions[i].answers[1];
-            var answer3 = simpsonsQuestions[i].answers[2];
+      var answer3 = simpsonsQuestions[i].answers[2];
 
-      divContainer.append('<div class="form-check"><input class="form-check-input" type="radio" name="radio-answer" id="radio'+i+'"><label class="form-check-label" id="radio'+i+'label" for="radio'+i+'">' + answer1 +
-              '</label></div>');
-      divContainer.append('<div class="form-check"><input class="form-check-input" type="radio" name="radio-answer" id="radio'+i+'"><label class="form-check-label" id="radio'+i+'label" for="radio'+i+'">' + answer2 +
-                      '</label></div>');
-    divContainer.append('<div class="form-check"><input class="form-check-input" type="radio" name="radio-answer" id="radio'+i+'"><label class="form-check-label" id="radio'+i+'label" for="radio'+i+'">' + answer3 +
-                                      '</label></div>');
-
+      divContainer.append('<div class="form-check"><input class="form-check-input" type="radio" name="radio-group'+i+'" id="radio'+i+'"><label class="form-check-label" id="radio'+i+'label" for="radio'+i+'">' + answer1 + '</label></div>');
+      divContainer.append('<div class="form-check"><input class="form-check-input" type="radio" name="radio-group'+i+'" id="radio'+i+'"><label class="form-check-label" id="radio'+i+'label" for="radio'+i+'">' + answer2 + '</label></div>');
+      divContainer.append('<div class="form-check"><input class="form-check-input" type="radio" name="radio-group'+i+'" id="radio'+i+'"><label class="form-check-label" id="radio'+i+'label" for="radio'+i+'">' + answer3 + '</label></div>');
     }
-
-
-    },
-
-
+  },
 }
 
 var simpsonsQuestions =
@@ -125,9 +117,9 @@ var simpsonsQuestions =
     correct: "Poochie"
   },
   {
-    question: "When the Simpson kids are removed by child protective services, who is their foster home?",
-    answers: ["Flanders", "Van Houten", "Smithers"],
-    correct: "Flanders"
+    question: "When the Simpson kids are removed from their parents' care by child protective services, which one becomes their foster family?",
+    answers: ["Flanders family", "Van Houten family", "Smithers family"],
+    correct: "Flanders family"
   },
   {
     question: "When Marge starts a business after attending a franchise fair, what is her company?",
