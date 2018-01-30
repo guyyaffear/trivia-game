@@ -41,9 +41,9 @@ var gameState = {
     $("#questions-box").empty();
     $("#timer").empty();
     $("#timer").hide();
-    $("#correct-answers").text("Correct answers: " + numCorrect);
-    $("#incorrect-answers").text("Incorrect answers: " + numIncorrect);
-    $("#unanswered").text("Skipped questions: " + numUnanswered);
+    $("#correct-answers").text("Correct answers (Woo-hoo!): " + numCorrect);
+    $("#incorrect-answers").text("Incorrect answers (D'oh!): " + numIncorrect);
+    $("#unanswered").text("Skipped questions (Meh): " + numUnanswered);
   }
 }
 
