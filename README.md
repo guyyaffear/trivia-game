@@ -1,4 +1,4 @@
-# The Simpsons Trivia Game
+# _The Simpsons_ Trivia Game
 
 Test your knowledge of _The Simpsons_ with this multiple choice trivia game.
 
