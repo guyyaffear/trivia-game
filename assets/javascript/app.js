@@ -1,99 +1,61 @@
 $(document).ready(function(){
 
-// start the game when user clicks on Start button
-$("#start-button").on("click", gameState.startTimer);
+  // start the game when user clicks on Start button
+  $("#start-button").on("click", gameState.startTimer);
 
 });
 
-// Object to store information about the state of game play
-
+// information about the state of game play
 var gameState = {
 
-  //make this 60 seconds when actually playing game
+  // set the time at 60 seconds, and count down by 1 second
+  timeRemaining : 60,
 
-  //TODO : why does time remaining show up later?
+  // start the timer, hide the start page, show the questions
+  startTimer: function() {
+    $("#timer").text("Time remaining: " + gameState.timeRemaining);
+    setInterval(gameState.countdown, 1000);
+    $("#start-page").hide();
+    trivia.displayQuestions();
+  },
 
-  timeRemaining : 10,
+  // decrement the timer and update the UI; stop the timer at 0
+  countdown: function() {
+    gameState.timeRemaining--;
+    $("#timer").text("Time remaining: " + gameState.timeRemaining);
+    if (gameState.timeRemaining === 0) {
+      gameState.stopTimer();
+      $("#timer").empty();
+    }
+  },
 
-// reset: function() {
-//   gameState.timeRemaining = 10;
-//   $("#timer").text("Time remaining: " + 10);
-// },
+  // stop the timer and check the answers
+  stopTimer: function() {
+    clearInterval();
+    trivia.checkAnswers();
+  },
 
-startTimer: function() {
-  setInterval(gameState.countdown, 1000);
-  $("#start-page").hide(); //hide the start page and show game play
-  trivia.displayQuestions();
-},
-
-stopTimer: function() {
-  clearInterval();
-  // console.log("time stopped");
-  trivia.checkAnswers();
-},
-
-countdown: function() {
-  gameState.timeRemaining--;
-  $("#timer").text("Time remaining: " + gameState.timeRemaining);
-  if (gameState.timeRemaining === 0) {
-    gameState.stopTimer();
-    $("#timer").empty();
-  }
-},
-
-// display the end page
-showEndPage: function(numCorrect, numIncorrect, numUnanswered) {
+  // hide the quetions and display the end page with results
+  showEndPage: function(numCorrect, numIncorrect, numUnanswered) {
     $("#end-page").show();
     $("#questions-box").empty();
     $("#timer").empty();
     $("#timer").hide();
     $("#correct-answers").text("Correct answers: " + numCorrect);
     $("#incorrect-answers").text("Incorrect answers: " + numIncorrect);
-    $("#unanswered").text("Questions skipped: " + numUnanswered);
-    // console.log(numCorrect, numIncorrect, numUnanswered);
+    $("#unanswered").text("Skipped questions: " + numUnanswered);
+  }
 }
 
-}
-
+// functions to handle the building questions page and scoring
 var trivia = {
 
-  checkAnswers: function() {
-    var correctAnswer;
-    var userAnswer;
-    var numCorrect = 0;
-    var numIncorrect = 0;
-    var numUnanswered = 0;
-
-    for (var i = 0; i < questionBank.length; i++) {
-      correctAnswer = questionBank[i].correct;
-      userAnswer = $('input[id=radio'+i+']:checked + label').text();
-
-      console.log("correct answer " + correctAnswer);
-      // console.log("user answer " + userAnswer);
-
-      if (userAnswer === correctAnswer) {
-        console.log("celebrate");
-        numCorrect++;
-      } else if (userAnswer === "") {
-              console.log("no answer");
-          numUnanswered++;
-      }
-      else if (userAnswer !== correctAnswer) {
-         {
-          console.log("sorry");
-          numIncorrect++;
-      }
-
-      }
-        }
-        // console.log(numCorrect, numIncorrect, numUnanswered);
-      gameState.showEndPage(numCorrect, numIncorrect, numUnanswered);
-  },
-
+  // pull questions from the array of questions, loop through them, and append to UI
   displayQuestions: function() {
-      var divContainer = $("#questions-box");
-      var answerGroup = $(".form-check");
-
+    var divContainer = $("#questions-box");
+    var answerGroup = $(".form-check");
+    divContainer.append('<h2>Answer the following questions:</h2>');
+            
     for (var i = 0; i < questionBank.length; i++) {
 
       divContainer.append('<div id="question">' + questionBank[i].question + '</div>');
@@ -106,12 +68,47 @@ var trivia = {
       divContainer.append('<div class="form-check"><input class="form-check-input" type="radio" name="radio-group'+i+'" id="radio'+i+'"><label class="form-check-label" id="radio'+i+'label" for="radio'+i+'">' + answer2 + '</label></div>');
       divContainer.append('<div class="form-check"><input class="form-check-input" type="radio" name="radio-group'+i+'" id="radio'+i+'"><label class="form-check-label" id="radio'+i+'label" for="radio'+i+'">' + answer3 + '</label></div>');
     }
+
+    // add a Done button to the end of the page and register its click handler
+    var doneButton = '<button class="btn btn-primary" id="done-button" type="submit">Done</button>';
+    divContainer.append(doneButton);
+    $("#done-button").on("click", gameState.stopTimer);
+  },
+
+  // test if the user answers are correct, incorrect, or if there are unanswered questions
+  checkAnswers: function() {
+    var correctAnswer;
+    var userAnswer;
+    var numCorrect = 0;
+    var numIncorrect = 0;
+    var numUnanswered = 0;
+
+    // loop through to compare the text of the label with the user answers
+    // increment score counts appropriately
+    for (var i = 0; i < questionBank.length; i++) {
+      correctAnswer = questionBank[i].correct;
+      userAnswer = $('input[id=radio'+i+']:checked + label').text();
+
+      if (userAnswer === correctAnswer) {
+        numCorrect++;
+      } else if (userAnswer === "") {
+        numUnanswered++;
+      } else if (userAnswer !== correctAnswer) {
+        {
+          numIncorrect++;
+        }
+      }
+    }
+
+    // show the end page with the score tally
+    gameState.showEndPage(numCorrect, numIncorrect, numUnanswered);
   },
 }
 
+// array of objects with the questions, possible answers, and the correct answer
 var questionBank =
 [
-   {
+  {
     question: "Who is the mayor of Springfield?",
     answers: ["Montgomery Burns", "Joe Quimby", "Clancy Wiggum"],
     correct: "Joe Quimby"
@@ -119,8 +116,8 @@ var questionBank =
 
   {
     question: "What did Lyle Lanley sell to Brockway, Ogdenville, and North Haverbrook?",
-    answers: ["monorail", "nuclear power plant", "mule"],
-    correct: "monorail"
+    answers: ["a monorail", "a nuclear power plant", "a mule with a spinning wheel"],
+    correct: "a monorail"
   },
   {
     question: "What what the name of Bart's elephant?",
@@ -133,19 +130,19 @@ var questionBank =
     correct: "Knoxville"
   },
   {
-    question: "When the Simpsons move to a farm, what do they plant and sell at a roadside stand?",
+    question: "When the Simpsons move to a farm, what plant do they grow and sell at a roadside stand?",
     answers: ["carrots and peas", "a cross of tomatoes and tobacco", "gummy bears"],
     correct: "a cross of tomatoes and tobacco"
   },
   {
-    question: "What character that Homer voices gets added to the Itchy and Scratchy Show?",
+    question: "Which character that Homer voiced was added to, and promptly killed off, on the Itchy and Scratchy Show?",
     answers: ["Poochie", "Max Power", "Kang"],
     correct: "Poochie"
   },
   {
-    question: "When the Simpson kids are removed from their parents' care by child protective services, which one becomes their foster family?",
-    answers: ["Flanders family", "Van Houten family", "Smithers family"],
-    correct: "Flanders family"
+    question: "When child protective services removes the Simpson kids, which family fosters them?",
+    answers: ["Flanders", "Van Houten", "Smithers"],
+    correct: "Flanders"
   },
   {
     question: "When Marge starts a business after attending a franchise fair, what is her company?",
@@ -153,7 +150,7 @@ var questionBank =
     correct: "Pretzel Wagon"
   },
   {
-    question: "What does Lisa make for Homer's BBBQ backyard barbecue?",
+    question: "What dish does Lisa make for Homer's BBBQ backyard barbecue?",
     answers: ["salad", "gazpacho", "lamb chops"],
     correct: "gazpacho"
   },

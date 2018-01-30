@@ -20,13 +20,9 @@ label {
   font-size: 20px;
 }
 
-.card-body p {
-  font-size: 20px;
-}
-
 #end-page p {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 20px;
+  /* font-weight: 700; */
 }
 
 #correct-answers {
@@ -49,5 +45,9 @@ footer {
 }
 
 #timer {
+  margin-top: 20px;
+}
+
+#done-button {
   margin-top: 20px;
 }
