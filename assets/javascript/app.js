@@ -1,45 +1,34 @@
 $(document).ready(function(){
 
-var intervalId;
+// start the game when user clicks on Start button
 $("#start-button").on("click", gameState.startTimer);
 
 });
+
+// Object to store information about the state of game play
 
 var gameState = {
 
   //make this 60 seconds when actually playing game
 
   //TODO : why does time remaining show up later?
-  
-timeRemaining : 10,
 
-showEndPage: function(numCorrect, numIncorrect, numUnanswered) {
-    $("#end-page").show();
-    $("#questions-box").hide();
-    $("#timer").hide();
-    $("#correct-answers").text("Correct answers: " + numCorrect);
-    $("#incorrect-answers").text("Incorrect answers: " + numIncorrect);
-    $("#unanswered").text("Questions skipped: " + numUnanswered);
-    console.log(numCorrect, numIncorrect, numUnanswered);
-},
+  timeRemaining : 10,
 
-reset: function() {
-  gameState.timeRemaining = 10;
-  $("#timer").text("Time remaining: " + 10);
-},
+// reset: function() {
+//   gameState.timeRemaining = 10;
+//   $("#timer").text("Time remaining: " + 10);
+// },
 
 startTimer: function() {
+  setInterval(gameState.countdown, 1000);
   $("#start-page").hide(); //hide the start page and show game play
-  $("#timer").show();
-  intervalId = setInterval(gameState.countdown, 1000);
-
   trivia.displayQuestions();
 },
 
 stopTimer: function() {
-  clearInterval(intervalId);
-  console.log("time stopped");
-
+  clearInterval();
+  // console.log("time stopped");
   trivia.checkAnswers();
 },
 
@@ -48,7 +37,20 @@ countdown: function() {
   $("#timer").text("Time remaining: " + gameState.timeRemaining);
   if (gameState.timeRemaining === 0) {
     gameState.stopTimer();
+    $("#timer").empty();
   }
+},
+
+// display the end page
+showEndPage: function(numCorrect, numIncorrect, numUnanswered) {
+    $("#end-page").show();
+    $("#questions-box").empty();
+    $("#timer").empty();
+    $("#timer").hide();
+    $("#correct-answers").text("Correct answers: " + numCorrect);
+    $("#incorrect-answers").text("Incorrect answers: " + numIncorrect);
+    $("#unanswered").text("Questions skipped: " + numUnanswered);
+    // console.log(numCorrect, numIncorrect, numUnanswered);
 }
 
 }
@@ -87,10 +89,6 @@ var trivia = {
         // console.log(numCorrect, numIncorrect, numUnanswered);
       gameState.showEndPage(numCorrect, numIncorrect, numUnanswered);
   },
-
-  // keepScore: function() {
-  //   var score =
-  // },
 
   displayQuestions: function() {
       var divContainer = $("#questions-box");
